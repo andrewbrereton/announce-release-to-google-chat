@@ -1,6 +1,7 @@
 import { getInput, setFailed } from '@actions/core'
 import { getOctokit, context } from '@actions/github'
-import MarkdownIt from 'markdown-it'
+import { buildReleaseCard } from './src/messages'
+import { post } from './src/axios'
 
 // Run Action.
 const run = async () => {
@@ -10,47 +11,22 @@ const run = async () => {
     const octokit = getOctokit(token)
 
     // Get the current repository from the github context
-    const { owner, repo } = context.repo
+    const { owner, repository } = context.repo
 
     // Fetch the latest release
-    const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({
-      owner,
-      repo
-    })
+    const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repository })
 
-    /*
-    owner
-    repo
-    latestRelease.tag_name
-    latestRelease.author.login
-    latestRelease.html_url
-    latestRelease.body
-    */
+    const tagName = latestRelease.tag_name
+    const author = latestRelease.author.login
+    const releaseUrl = latestRelease.html_url
+    const releaseBodyMarkdown = latestRelease.body
 
-    const md = new MarkdownIt()
-    const releaseBodyHtml = md
-      .render(latestRelease.body)
-      .replace(/\n/g, '') // Remove all newlines
-      .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
-      .trim() // Remove leading and trailing whitespace
+    const webhookUrl = getInput('webhook-url', { required: true })
+    const card = buildReleaseCard(repository, tagName, author, releaseUrl, releaseBodyMarkdown)
 
-    console.log({ releaseBodyMarkdown: latestRelease.body, releaseBodyHtml })
+    console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
 
-    // console.log({owner, repo, latestRelease});
-
-    // console.log(`Latest release: ${latestRelease.name}`)
-    // console.log(`Release tag: ${latestRelease.tag_name}`)
-    // console.log(`Release URL: ${latestRelease.html_url}`)
-
-    // core.setOutput('release-name', latestRelease.name)
-    // core.setOutput('release-tag', latestRelease.tag_name)
-    // core.setOutput('release-url', latestRelease.html_url)
-
-    // const webhookUrl = getInput('webhook-url', { required: true })
-
-    // const body = newRelease(repository, tagName, author, releaseUrl, releaseBodyHtml)
-
-    // await post(webhookUrl, body)
+    await post(webhookUrl, card)
   } catch (error) {
     setFailed(error.message)
   }

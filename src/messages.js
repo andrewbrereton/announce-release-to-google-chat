@@ -8,8 +8,11 @@
  *
  * @returns {object} Google Chat card body
  */
-const newRelease = (repository, tagName, author, releaseUrl, releaseBodyHtml) => {
-  const body = {
+const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMarkdown) => {
+  // Split the markdown into lines
+  const lines = releaseBodyMarkdown.split(/\r?\n/).filter(line => line.trim() !== '')
+
+  const card = {
     cards: [
       {
         header: {
@@ -39,6 +42,7 @@ const newRelease = (repository, tagName, author, releaseUrl, releaseBodyHtml) =>
               }
             ]
           },
+          { widgets: [] },
           {
             widgets: [
               {
@@ -61,7 +65,57 @@ const newRelease = (repository, tagName, author, releaseUrl, releaseBodyHtml) =>
       }
     ]
   }
-  return body
+
+  //  const card = {
+  //    cards: [
+  //      {
+  //        header: {
+  //          title: "Release Notes"
+  //        },
+  //        sections: [
+  //          {
+  //            widgets: []
+  //          }
+  //        ]
+  //      }
+  //    ]
+  //  };
+
+  const currentSection = card.cards[0].sections[1].widgets
+
+  lines.forEach(line => {
+    if (line.startsWith('# ') || line.startsWith('## ') || line.startsWith('### ') || line.startsWith('#### ')) {
+      // Header
+      currentSection.push({
+        textParagraph: {
+          text: `*${line.substring(3)}*`
+        }
+      })
+    } else if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('1. ')) {
+      // List item
+      currentSection.push({
+        textParagraph: {
+          text: `• ${line.substring(2)}`
+        }
+      })
+    } else if (line.startsWith('**')) {
+      // Bold text
+      currentSection.push({
+        textParagraph: {
+          text: line
+        }
+      })
+    } else {
+      // Regular paragraph
+      currentSection.push({
+        textParagraph: {
+          text: line
+        }
+      })
+    }
+  })
+
+  return card
 }
 
-module.exports = { newRelease }
+export default { buildReleaseCard }
