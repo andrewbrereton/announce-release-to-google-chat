@@ -17,7 +17,7 @@ const newAxios = (baseURL) => {
 const post = async (url, body) => {
   const axiosInstance = newAxios(url)
   try {
-    // await axiosInstance.post(url, body)
+    await axiosInstance.post(url, body)
   } catch (error) {
     throw new Error(`Google Chat notification failed. ${error}}`)
   }
