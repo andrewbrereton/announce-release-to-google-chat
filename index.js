@@ -1,17 +1,16 @@
-const core = require('@actions/core')
-const chat = require('./src/chat')
-const github = require('@actions/github')
-const MarkdownIt = require('markdown-it');
+import { getInput, setFailed } from '@actions/core'
+import { getOctokit, context } from '@actions/github'
+import MarkdownIt from 'markdown-it'
 
 // Run Action.
 const run = async () => {
   try {
     // Get the GITHUB_TOKEN from the action's environment
-    const token = core.getInput('github-token', { required: true })
-    const octokit = github.getOctokit(token)
+    const token = getInput('github-token', { required: true })
+    const octokit = getOctokit(token)
 
     // Get the current repository from the github context
-    const { owner, repo } = github.context.repo
+    const { owner, repo } = context.repo
 
     // Fetch the latest release
     const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({
@@ -28,14 +27,14 @@ const run = async () => {
     latestRelease.body
     */
 
-    const md = new MarkdownIt();
+    const md = new MarkdownIt()
     const releaseBodyHtml = md
       .render(latestRelease.body)
-      .replace(/\n/g, '')   // Remove all newlines
+      .replace(/\n/g, '') // Remove all newlines
       .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
-      .trim()               // Remove leading and trailing whitespace
+      .trim() // Remove leading and trailing whitespace
 
-    // console.log({releaseBodyMarkdown: latestRelease.body, releaseBodyHtml})
+    console.log({ releaseBodyMarkdown: latestRelease.body, releaseBodyHtml })
 
     // console.log({owner, repo, latestRelease});
 
@@ -47,13 +46,13 @@ const run = async () => {
     // core.setOutput('release-tag', latestRelease.tag_name)
     // core.setOutput('release-url', latestRelease.html_url)
 
-    const webhookUrl = core.getInput('webhook-url', { required: true })
+    // const webhookUrl = getInput('webhook-url', { required: true })
 
-    const body = newRelease(repository, tagName, author, releaseUrl, releaseBodyHtml)
+    // const body = newRelease(repository, tagName, author, releaseUrl, releaseBodyHtml)
 
-    await post(webhookUrl, body)
+    // await post(webhookUrl, body)
   } catch (error) {
-    core.setFailed(error.message)
+    setFailed(error.message)
   }
 }
 
