@@ -1,13 +1,13 @@
-name: 'Send Google Chat messages'
-description: 'Send Google Chat messages'
-author: '@delivery-much'
+name: 'announce-release-to-google-chat'
+description: 'Announce Release to Google Chat'
+author: 'andrewbrereton'
 branding:
-  icon: 'code'
-  color: 'yellow'
+  icon: 'truck'
+  color: 'blue'
 inputs:
-  url:
+  webhook_url:
     description: 'Google Chat Webhook URL'
     required: true
 runs:
-  using: 'node12'
+  using: 'node20'
   main: 'dist/index.js'

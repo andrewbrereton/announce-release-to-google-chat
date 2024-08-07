@@ -1,7 +1,7 @@
 {
-  "name": "actions-chat",
+  "name": "announce-release-to-google-chat",
   "version": "1.0.0",
-  "description": "Send Google Chat messages",
+  "description": "Announce Release to Google Chat",
   "main": "index.js",
   "scripts": {
     "lint": "standard",
@@ -10,27 +10,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/delivery-much/actions-chat.git"
+    "url": "git+https://github.com/andrewbrereton/announce-release-to-google-chat.git"
   },
   "keywords": [
     "GitHub",
     "Actions",
-    "JavaScript"
+    "JavaScript",
+    "Release",
+    "Google Chat"
   ],
   "author": "@delivery-much",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/delivery-much/actions-chat/issues"
+    "url": "https://github.com/andrewbrereton/announce-release-to-google-chat/issues"
   },
-  "homepage": "https://github.com/delivery-much/actions-chat#readme",
+  "homepage": "https://github.com/andrewbrereton/announce-release-to-google-chat#readme",
   "dependencies": {
-    "@actions/core": "^1.1.0",
-    "@actions/github": "^1.1.0",
-    "axios": "^0.21.1"
+    "@actions/core": "^1.10",
+    "@actions/github": "^6.0",
+    "axios": "^1"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3",
-    "standard": "^14.3.4"
+    "@vercel/ncc": "^0.38",
+    "standard": "^17.1"
   },
   "standard": {
     "ignore": [

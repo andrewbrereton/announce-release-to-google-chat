@@ -1,13 +1,6 @@
-# @delivery-much/actions-chat
+# Announce Release to Google Chat
 
-Messages are sent by [chat.js](src/chat.js) and defined in [messages.js](src/messages.js).
-
-We use Axios as HTTP client and the basic instance is defined in [axios.js](src/axios.js).
-
-## Supported messages
-
-- [New pull request](#new-pull-request)
-- [New release](#new-release)
+Announce your latest release to a Google Chat.
 
 ## Inputs
 
@@ -15,40 +8,27 @@ We use Axios as HTTP client and the basic instance is defined in [axios.js](src/
 
 **Required** Your Google Chat Webhook URL. You can find it in "Configure Webhooks" option in Chat rooms.
 
-## Example workflows
+## Example workflow
 
-### New pull request
-
-- Create a file `chat-pull-request.yml` in `.github/workflows/` directory with the following content:
+- In your deploy workflow in your `.github/workflows/` directory:
 
 ```yaml
-name: chat-pull-request 
+name: deploy
 on:
-  pull_request:
-    types: [opened, reopened, ready_for_review]
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 jobs:
-  chat:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: delivery-much/actions-chat@v1
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_tag.outputs.TAG_NAME }}
+          generate_release_notes: true
+      - uses: andrewbrereton/announce-release-to-google-chat@v1
         with:
           url: ${{ secrets.GOOGLE_CHAT_PULL_REQUEST_WEBHOOK_URL }}
-```
-
-### New release
-
-- Create a file `chat-release.yml` in `.github/workflows/` directory with the following content:
-
-```yaml
-name: chat-release
-on:
-  release:
-    types: [created]
-jobs:
-  chat:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: delivery-much/actions-chat@v1
-        with:
-          url: ${{ secrets.GOOGLE_CHAT_RELEASE_WEBHOOK_URL }}
 ```
