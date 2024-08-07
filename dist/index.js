@@ -39535,7 +39535,7 @@ var axios = __nccwpck_require__(6296);
 
 // Run Action.
 const run = async () => {
-  try {
+  // try {
     // Get the GITHUB_TOKEN from the action's environment
     const token = (0,core.getInput)('github-token', { required: true })
     const octokit = (0,github.getOctokit)(token)
@@ -39557,9 +39557,9 @@ const run = async () => {
     console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
 
     await (0,axios.post)(webhookUrl, card)
-  } catch (error) {
-    (0,core.setFailed)(error.message)
-  }
+  // } catch (error) {
+  //   setFailed(error.message)
+  // }
 }
 
 run()
