@@ -32793,21 +32793,6 @@ const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMa
     ]
   }
 
-  //  const card = {
-  //    cards: [
-  //      {
-  //        header: {
-  //          title: "Release Notes"
-  //        },
-  //        sections: [
-  //          {
-  //            widgets: []
-  //          }
-  //        ]
-  //      }
-  //    ]
-  //  };
-
   const currentSection = card.cards[0].sections[1].widgets
 
   lines.forEach(line => {
@@ -39582,8 +39567,6 @@ const run = async () => {
 
   const webhookUrl = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('webhook-url', { required: true })
   const card = (0,_src_messages__WEBPACK_IMPORTED_MODULE_2__.buildReleaseCard)(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
-
-  console.log({card: card.cards})
 
   await (0,_src_axios__WEBPACK_IMPORTED_MODULE_3__.post)(webhookUrl, card)
   // } catch (error) {

@@ -66,21 +66,6 @@ const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMa
     ]
   }
 
-  //  const card = {
-  //    cards: [
-  //      {
-  //        header: {
-  //          title: "Release Notes"
-  //        },
-  //        sections: [
-  //          {
-  //            widgets: []
-  //          }
-  //        ]
-  //      }
-  //    ]
-  //  };
-
   const currentSection = card.cards[0].sections[1].widgets
 
   lines.forEach(line => {

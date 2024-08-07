@@ -24,8 +24,6 @@ const run = async () => {
   const webhookUrl = getInput('webhook-url', { required: true })
   const card = buildReleaseCard(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
 
-  console.log({card: card.cards})
-
   await post(webhookUrl, card)
   // } catch (error) {
   //   setFailed(error.message)
