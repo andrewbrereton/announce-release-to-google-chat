@@ -11,11 +11,11 @@ const run = async () => {
   const octokit = getOctokit(token)
 
   // Get the current repository from the github context
-  const { owner, repository } = context.repo
-  console.log({owner, repository})
+  const { owner, repo } = context.repo
+  console.log({owner, repo})
 
   // Fetch the latest release
-  const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repository })
+  const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repo })
 
   const tagName = latestRelease.tag_name
   const author = latestRelease.author.login
@@ -23,7 +23,7 @@ const run = async () => {
   const releaseBodyMarkdown = latestRelease.body
 
   const webhookUrl = getInput('webhook-url', { required: true })
-  const card = buildReleaseCard(repository, tagName, author, releaseUrl, releaseBodyMarkdown)
+  const card = buildReleaseCard(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
 
   console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
 
