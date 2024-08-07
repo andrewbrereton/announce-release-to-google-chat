@@ -118,4 +118,4 @@ const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMa
   return card
 }
 
-export default { buildReleaseCard }
+module.exports = { buildReleaseCard }

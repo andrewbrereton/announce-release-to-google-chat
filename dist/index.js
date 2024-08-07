@@ -32722,6 +32722,134 @@ module.exports = { post }
 
 /***/ }),
 
+/***/ 6038:
+/***/ ((module) => {
+
+/**
+ * Build body of Google Chat card for new releases.
+ *
+ * @param {string} repo - Tag repository
+ * @param {string} tag - Tag name title
+ * @param {string} author - GitHub author username
+ * @param {string} htmlUrl - Tag GitHub Url
+ *
+ * @returns {object} Google Chat card body
+ */
+const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMarkdown) => {
+  // Split the markdown into lines
+  const lines = releaseBodyMarkdown.split(/\r?\n/).filter(line => line.trim() !== '')
+
+  const card = {
+    cards: [
+      {
+        header: {
+          title: 'New release',
+          imageUrl: 'https://theentropic.gallerycdn.vsassets.io/extensions/theentropic/git-tag-loader/1.0.0/1563851448848/Microsoft.VisualStudio.Services.Icons.Default'
+        },
+        sections: [
+          {
+            widgets: [
+              {
+                keyValue: {
+                  topLabel: 'Repository',
+                  content: repository
+                }
+              },
+              {
+                keyValue: {
+                  topLabel: 'Tag',
+                  content: tagName
+                }
+              },
+              {
+                keyValue: {
+                  topLabel: 'Author',
+                  content: author
+                }
+              }
+            ]
+          },
+          { widgets: [] },
+          {
+            widgets: [
+              {
+                buttons: [
+                  {
+                    textButton: {
+                      text: 'OPEN',
+                      onClick: {
+                        openLink: {
+                          url: releaseUrl
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+
+  //  const card = {
+  //    cards: [
+  //      {
+  //        header: {
+  //          title: "Release Notes"
+  //        },
+  //        sections: [
+  //          {
+  //            widgets: []
+  //          }
+  //        ]
+  //      }
+  //    ]
+  //  };
+
+  const currentSection = card.cards[0].sections[1].widgets
+
+  lines.forEach(line => {
+    if (line.startsWith('# ') || line.startsWith('## ') || line.startsWith('### ') || line.startsWith('#### ')) {
+      // Header
+      currentSection.push({
+        textParagraph: {
+          text: `*${line.substring(3)}*`
+        }
+      })
+    } else if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('1. ')) {
+      // List item
+      currentSection.push({
+        textParagraph: {
+          text: `• ${line.substring(2)}`
+        }
+      })
+    } else if (line.startsWith('**')) {
+      // Bold text
+      currentSection.push({
+        textParagraph: {
+          text: line
+        }
+      })
+    } else {
+      // Regular paragraph
+      currentSection.push({
+        textParagraph: {
+          text: line
+        }
+      })
+    }
+  })
+
+  return card
+}
+
+module.exports = { buildReleaseCard }
+
+
+/***/ }),
+
 /***/ 9491:
 /***/ ((module) => {
 
@@ -39371,6 +39499,35 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -39391,143 +39548,15 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-// ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
-
-// NAMESPACE OBJECT: ./src/messages.js
-var messages_namespaceObject = {};
-__nccwpck_require__.r(messages_namespaceObject);
-
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __nccwpck_require__(2186);
-// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
-var github = __nccwpck_require__(5438);
-;// CONCATENATED MODULE: ./src/messages.js
-/**
- * Build body of Google Chat card for new releases.
- *
- * @param {string} repo - Tag repository
- * @param {string} tag - Tag name title
- * @param {string} author - GitHub author username
- * @param {string} htmlUrl - Tag GitHub Url
- *
- * @returns {object} Google Chat card body
- */
-const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMarkdown) => {
-  // Split the markdown into lines
-  const lines = releaseBodyMarkdown.split(/\r?\n/).filter(line => line.trim() !== '')
-
-  const card = {
-    cards: [
-      {
-        header: {
-          title: 'New release',
-          imageUrl: 'https://theentropic.gallerycdn.vsassets.io/extensions/theentropic/git-tag-loader/1.0.0/1563851448848/Microsoft.VisualStudio.Services.Icons.Default'
-        },
-        sections: [
-          {
-            widgets: [
-              {
-                keyValue: {
-                  topLabel: 'Repository',
-                  content: repository
-                }
-              },
-              {
-                keyValue: {
-                  topLabel: 'Tag',
-                  content: tagName
-                }
-              },
-              {
-                keyValue: {
-                  topLabel: 'Author',
-                  content: author
-                }
-              }
-            ]
-          },
-          { widgets: [] },
-          {
-            widgets: [
-              {
-                buttons: [
-                  {
-                    textButton: {
-                      text: 'OPEN',
-                      onClick: {
-                        openLink: {
-                          url: releaseUrl
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-
-  //  const card = {
-  //    cards: [
-  //      {
-  //        header: {
-  //          title: "Release Notes"
-  //        },
-  //        sections: [
-  //          {
-  //            widgets: []
-  //          }
-  //        ]
-  //      }
-  //    ]
-  //  };
-
-  const currentSection = card.cards[0].sections[1].widgets
-
-  lines.forEach(line => {
-    if (line.startsWith('# ') || line.startsWith('## ') || line.startsWith('### ') || line.startsWith('#### ')) {
-      // Header
-      currentSection.push({
-        textParagraph: {
-          text: `*${line.substring(3)}*`
-        }
-      })
-    } else if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('1. ')) {
-      // List item
-      currentSection.push({
-        textParagraph: {
-          text: `• ${line.substring(2)}`
-        }
-      })
-    } else if (line.startsWith('**')) {
-      // Bold text
-      currentSection.push({
-        textParagraph: {
-          text: line
-        }
-      })
-    } else {
-      // Regular paragraph
-      currentSection.push({
-        textParagraph: {
-          text: line
-        }
-      })
-    }
-  })
-
-  return card
-}
-
-/* harmony default export */ const messages = ({ buildReleaseCard });
-
-// EXTERNAL MODULE: ./src/axios.js
-var axios = __nccwpck_require__(6296);
-;// CONCATENATED MODULE: ./index.js
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(5438);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _src_messages__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(6038);
+/* harmony import */ var _src_messages__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(_src_messages__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _src_axios__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(6296);
+/* harmony import */ var _src_axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(_src_axios__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -39537,12 +39566,11 @@ var axios = __nccwpck_require__(6296);
 const run = async () => {
   // try {
   // Get the GITHUB_TOKEN from the action's environment
-  const token = (0,core.getInput)('github-token', { required: true })
-  const octokit = (0,github.getOctokit)(token)
+  const token = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('github-token', { required: true })
+  const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(token)
 
   // Get the current repository from the github context
-  const { owner, repo } = github.context.repo
-  console.log({owner, repo})
+  const { owner, repo } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo
 
   // Fetch the latest release
   const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repo })
@@ -39552,12 +39580,12 @@ const run = async () => {
   const releaseUrl = latestRelease.html_url
   const releaseBodyMarkdown = latestRelease.body
 
-  const webhookUrl = (0,core.getInput)('webhook-url', { required: true })
-  const card = (0,messages_namespaceObject.buildReleaseCard)(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
+  const webhookUrl = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('webhook-url', { required: true })
+  const card = (0,_src_messages__WEBPACK_IMPORTED_MODULE_2__.buildReleaseCard)(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
 
   console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
 
-  await (0,axios.post)(webhookUrl, card)
+  await (0,_src_axios__WEBPACK_IMPORTED_MODULE_3__.post)(webhookUrl, card)
   // } catch (error) {
   //   setFailed(error.message)
   // }
