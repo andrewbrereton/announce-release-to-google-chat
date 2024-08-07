@@ -12,6 +12,7 @@ const run = async () => {
 
   // Get the current repository from the github context
   const { owner, repository } = context.repo
+  console.log({owner, repository})
 
   // Fetch the latest release
   const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repository })
