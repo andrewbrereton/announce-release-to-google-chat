@@ -14,6 +14,7 @@ jobs:
       - name: Run announce-release-to-google-chat
         uses: ./ # Use the action in the root directory
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           webhook-url: ${{ secrets.WEBHOOK_URL }}
         id: announce_release_to_google_chat
 

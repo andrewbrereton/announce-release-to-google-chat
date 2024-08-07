@@ -5,6 +5,9 @@ branding:
   icon: 'truck'
   color: 'blue'
 inputs:
+  github-token:
+    description: 'GitHub token'
+    required: true
   webhook-url:
     description: 'Google Chat Webhook URL'
     required: true
