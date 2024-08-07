@@ -6,27 +6,27 @@ import { post } from './src/axios'
 // Run Action.
 const run = async () => {
   // try {
-    // Get the GITHUB_TOKEN from the action's environment
-    const token = getInput('github-token', { required: true })
-    const octokit = getOctokit(token)
+  // Get the GITHUB_TOKEN from the action's environment
+  const token = getInput('github-token', { required: true })
+  const octokit = getOctokit(token)
 
-    // Get the current repository from the github context
-    const { owner, repository } = context.repo
+  // Get the current repository from the github context
+  const { owner, repository } = context.repo
 
-    // Fetch the latest release
-    const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repository })
+  // Fetch the latest release
+  const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repository })
 
-    const tagName = latestRelease.tag_name
-    const author = latestRelease.author.login
-    const releaseUrl = latestRelease.html_url
-    const releaseBodyMarkdown = latestRelease.body
+  const tagName = latestRelease.tag_name
+  const author = latestRelease.author.login
+  const releaseUrl = latestRelease.html_url
+  const releaseBodyMarkdown = latestRelease.body
 
-    const webhookUrl = getInput('webhook-url', { required: true })
-    const card = buildReleaseCard(repository, tagName, author, releaseUrl, releaseBodyMarkdown)
+  const webhookUrl = getInput('webhook-url', { required: true })
+  const card = buildReleaseCard(repository, tagName, author, releaseUrl, releaseBodyMarkdown)
 
-    console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
+  console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
 
-    await post(webhookUrl, card)
+  await post(webhookUrl, card)
   // } catch (error) {
   //   setFailed(error.message)
   // }

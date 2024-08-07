@@ -39536,27 +39536,27 @@ var axios = __nccwpck_require__(6296);
 // Run Action.
 const run = async () => {
   // try {
-    // Get the GITHUB_TOKEN from the action's environment
-    const token = (0,core.getInput)('github-token', { required: true })
-    const octokit = (0,github.getOctokit)(token)
+  // Get the GITHUB_TOKEN from the action's environment
+  const token = (0,core.getInput)('github-token', { required: true })
+  const octokit = (0,github.getOctokit)(token)
 
-    // Get the current repository from the github context
-    const { owner, repository } = github.context.repo
+  // Get the current repository from the github context
+  const { owner, repository } = github.context.repo
 
-    // Fetch the latest release
-    const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repository })
+  // Fetch the latest release
+  const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repository })
 
-    const tagName = latestRelease.tag_name
-    const author = latestRelease.author.login
-    const releaseUrl = latestRelease.html_url
-    const releaseBodyMarkdown = latestRelease.body
+  const tagName = latestRelease.tag_name
+  const author = latestRelease.author.login
+  const releaseUrl = latestRelease.html_url
+  const releaseBodyMarkdown = latestRelease.body
 
-    const webhookUrl = (0,core.getInput)('webhook-url', { required: true })
-    const card = (0,messages_namespaceObject.buildReleaseCard)(repository, tagName, author, releaseUrl, releaseBodyMarkdown)
+  const webhookUrl = (0,core.getInput)('webhook-url', { required: true })
+  const card = (0,messages_namespaceObject.buildReleaseCard)(repository, tagName, author, releaseUrl, releaseBodyMarkdown)
 
-    console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
+  console.log({ tagName, author, releaseUrl, releaseBodyMarkdown, card })
 
-    await (0,axios.post)(webhookUrl, card)
+  await (0,axios.post)(webhookUrl, card)
   // } catch (error) {
   //   setFailed(error.message)
   // }
