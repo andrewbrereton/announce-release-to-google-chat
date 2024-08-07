@@ -5,7 +5,7 @@ import { post } from './src/axios'
 
 // Run Action.
 const run = async () => {
-  // try {
+  try {
   // Get the GITHUB_TOKEN from the action's environment
   const token = getInput('github-token', { required: true })
   const octokit = getOctokit(token)
@@ -25,9 +25,9 @@ const run = async () => {
   const card = buildReleaseCard(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
 
   await post(webhookUrl, card)
-  // } catch (error) {
-  //   setFailed(error.message)
-  // }
+  } catch (error) {
+    setFailed(error.message)
+  }
 }
 
 run()

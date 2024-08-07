@@ -32743,32 +32743,10 @@ const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMa
     cards: [
       {
         header: {
-          title: 'New release',
+          title: `${repository} ${tagName} has been released to production`,
           imageUrl: 'https://theentropic.gallerycdn.vsassets.io/extensions/theentropic/git-tag-loader/1.0.0/1563851448848/Microsoft.VisualStudio.Services.Icons.Default'
         },
         sections: [
-          {
-            widgets: [
-              {
-                keyValue: {
-                  topLabel: 'Repository',
-                  content: repository
-                }
-              },
-              {
-                keyValue: {
-                  topLabel: 'Tag',
-                  content: tagName
-                }
-              },
-              {
-                keyValue: {
-                  topLabel: 'Author',
-                  content: author
-                }
-              }
-            ]
-          },
           { widgets: [] },
           {
             widgets: [
@@ -32776,7 +32754,7 @@ const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMa
                 buttons: [
                   {
                     textButton: {
-                      text: 'OPEN',
+                      text: 'View release',
                       onClick: {
                         openLink: {
                           url: releaseUrl
@@ -32793,14 +32771,14 @@ const buildReleaseCard = (repository, tagName, author, releaseUrl, releaseBodyMa
     ]
   }
 
-  const currentSection = card.cards[0].sections[1].widgets
+  const currentSection = card.cards[0].sections[0].widgets
 
   lines.forEach(line => {
     if (line.startsWith('# ') || line.startsWith('## ') || line.startsWith('### ') || line.startsWith('#### ')) {
       // Header
       currentSection.push({
         textParagraph: {
-          text: `*${line.substring(3)}*`
+          text: `${line.substring(3)}`
         }
       })
     } else if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('1. ')) {
@@ -39549,7 +39527,7 @@ __nccwpck_require__.r(__webpack_exports__);
 
 // Run Action.
 const run = async () => {
-  // try {
+  try {
   // Get the GITHUB_TOKEN from the action's environment
   const token = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('github-token', { required: true })
   const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(token)
@@ -39569,9 +39547,9 @@ const run = async () => {
   const card = (0,_src_messages__WEBPACK_IMPORTED_MODULE_2__.buildReleaseCard)(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
 
   await (0,_src_axios__WEBPACK_IMPORTED_MODULE_3__.post)(webhookUrl, card)
-  // } catch (error) {
-  //   setFailed(error.message)
-  // }
+  } catch (error) {
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message)
+  }
 }
 
 run()
