@@ -15,6 +15,7 @@ jobs:
         uses: ./ # Use the action in the root directory
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          webhook_url: ${{ secrets.GITHUB_TOKEN }}
         id: announce_release_to_google_chat
 
       - name: Dump output
