@@ -39529,24 +39529,24 @@ __nccwpck_require__.r(__webpack_exports__);
 const run = async () => {
   try {
   // Get the GITHUB_TOKEN from the action's environment
-  const token = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('github-token', { required: true })
-  const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(token)
+    const token = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('github-token', { required: true })
+    const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(token)
 
-  // Get the current repository from the github context
-  const { owner, repo } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo
+    // Get the current repository from the github context
+    const { owner, repo } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo
 
-  // Fetch the latest release
-  const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repo })
+    // Fetch the latest release
+    const { data: latestRelease } = await octokit.rest.repos.getLatestRelease({ owner, repo })
 
-  const tagName = latestRelease.tag_name
-  const author = latestRelease.author.login
-  const releaseUrl = latestRelease.html_url
-  const releaseBodyMarkdown = latestRelease.body
+    const tagName = latestRelease.tag_name
+    const author = latestRelease.author.login
+    const releaseUrl = latestRelease.html_url
+    const releaseBodyMarkdown = latestRelease.body
 
-  const webhookUrl = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('webhook-url', { required: true })
-  const card = (0,_src_messages__WEBPACK_IMPORTED_MODULE_2__.buildReleaseCard)(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
+    const webhookUrl = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('webhook-url', { required: true })
+    const card = (0,_src_messages__WEBPACK_IMPORTED_MODULE_2__.buildReleaseCard)(repo, tagName, author, releaseUrl, releaseBodyMarkdown)
 
-  await (0,_src_axios__WEBPACK_IMPORTED_MODULE_3__.post)(webhookUrl, card)
+    await (0,_src_axios__WEBPACK_IMPORTED_MODULE_3__.post)(webhookUrl, card)
   } catch (error) {
     (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message)
   }
