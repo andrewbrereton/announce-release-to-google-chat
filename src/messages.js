@@ -8,7 +8,7 @@
  *
  * @returns {object} Google Chat card body
  */
-const newRelease = (repository, tagName, author, releaseUrl, releaseBody) => {
+const newRelease = (repository, tagName, author, releaseUrl, releaseBodyHtml) => {
   const body = {
     cards: [
       {

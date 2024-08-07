@@ -29,9 +29,13 @@ const run = async () => {
     */
 
     const md = new MarkdownIt();
-    const releaseBodyHtml = md.render(latestRelease.body);
+    const releaseBodyHtml = md
+      .render(latestRelease.body)
+      .replace(/\n/g, '')   // Remove all newlines
+      .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+      .trim()               // Remove leading and trailing whitespace
 
-    console.log({releaseBodyMarkdown: latestRelease.body, releaseBodyHtml})
+    // console.log({releaseBodyMarkdown: latestRelease.body, releaseBodyHtml})
 
     // console.log({owner, repo, latestRelease});
 
@@ -43,8 +47,11 @@ const run = async () => {
     // core.setOutput('release-tag', latestRelease.tag_name)
     // core.setOutput('release-url', latestRelease.html_url)
 
-    // const webhookUrl = core.getInput('webhook-url', { required: true })
-    // await chat.send(webhookUrl)
+    const webhookUrl = core.getInput('webhook-url', { required: true })
+
+    const body = newRelease(repository, tagName, author, releaseUrl, releaseBodyHtml)
+
+    await post(webhookUrl, body)
   } catch (error) {
     core.setFailed(error.message)
   }
