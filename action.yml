@@ -5,7 +5,7 @@ branding:
   icon: 'truck'
   color: 'blue'
 inputs:
-  webhook_url:
+  webhook-url:
     description: 'Google Chat Webhook URL'
     required: true
 runs:
