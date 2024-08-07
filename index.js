@@ -26,7 +26,7 @@ const run = async () => {
     core.setOutput('release-tag', latestRelease.tag_name)
     core.setOutput('release-url', latestRelease.html_url)
 
-    const webhookUrl = core.getInput('webhook_url', { required: true })
+    const webhookUrl = core.getInput('webhook-url', { required: true })
     await chat.send(webhookUrl)
   } catch (error) {
     core.setFailed(error.message)
