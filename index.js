@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const chat = require('./src/chat')
 const github = require('@actions/github')
+const MarkdownIt = require('markdown-it');
 
 // Run Action.
 const run = async () => {
@@ -18,15 +19,29 @@ const run = async () => {
       repo
     })
 
-    console.log({owner, repo, latestRelease});
+    /*
+    owner
+    repo
+    latestRelease.tag_name
+    latestRelease.author.login
+    latestRelease.html_url
+    latestRelease.body
+    */
 
-    console.log(`Latest release: ${latestRelease.name}`)
-    console.log(`Release tag: ${latestRelease.tag_name}`)
-    console.log(`Release URL: ${latestRelease.html_url}`)
+    const md = new MarkdownIt();
+    const releaseBodyHtml = md.render(latestRelease.body);
 
-    core.setOutput('release-name', latestRelease.name)
-    core.setOutput('release-tag', latestRelease.tag_name)
-    core.setOutput('release-url', latestRelease.html_url)
+    console.log({releaseBodyMarkdown: latestRelease.body, releaseBodyHtml})
+
+    // console.log({owner, repo, latestRelease});
+
+    // console.log(`Latest release: ${latestRelease.name}`)
+    // console.log(`Release tag: ${latestRelease.tag_name}`)
+    // console.log(`Release URL: ${latestRelease.html_url}`)
+
+    // core.setOutput('release-name', latestRelease.name)
+    // core.setOutput('release-tag', latestRelease.tag_name)
+    // core.setOutput('release-url', latestRelease.html_url)
 
     // const webhookUrl = core.getInput('webhook-url', { required: true })
     // await chat.send(webhookUrl)

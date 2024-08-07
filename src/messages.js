@@ -8,7 +8,7 @@
  *
  * @returns {object} Google Chat card body
  */
-const newRelease = (repo, tag, author, htmlUrl) => {
+const newRelease = (repository, tagName, author, releaseUrl, releaseBody) => {
   const body = {
     cards: [
       {
@@ -22,13 +22,13 @@ const newRelease = (repo, tag, author, htmlUrl) => {
               {
                 keyValue: {
                   topLabel: 'Repository',
-                  content: repo
+                  content: repository
                 }
               },
               {
                 keyValue: {
                   topLabel: 'Tag',
-                  content: tag
+                  content: tagName
                 }
               },
               {
@@ -48,7 +48,7 @@ const newRelease = (repo, tag, author, htmlUrl) => {
                       text: 'OPEN',
                       onClick: {
                         openLink: {
-                          url: htmlUrl
+                          url: releaseUrl
                         }
                       }
                     }
